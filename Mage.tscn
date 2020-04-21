@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Resources/Spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://Mage.gd" type="Script" id=2]
+[ext_resource path="res://life_bar.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 19.457, 19.3454 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 243.361, 135.509 )
+
+[node name="Mage" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color( 0.960784, 0.0901961, 0.027451, 1 )
+margin_left = -14.7414
+margin_top = -15.8796
+margin_right = 25.2586
+margin_bottom = 24.1204
+rect_scale = Vector2( 0.760657, 0.776456 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LifeBar" parent="." instance=ExtResource( 3 )]
+margin_left = -14.1938
+margin_top = -22.9726
+margin_right = -14.1938
+margin_bottom = -22.9726
+
+[node name="player" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 2
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 2, 2 )
+shape = SubResource( 1 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+scale = Vector2( 0.4, 0.4 )
+enabled = true
+collision_mask = 3
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Damage" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Damage"]
+shape = SubResource( 2 )
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 3 )
+[connection signal="mouse_entered" from="." to="." method="_on_Player_mouse_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="Damage" to="." method="_on_Damage_body_entered"]
+[connection signal="body_exited" from="Damage" to="." method="_on_Damage_body_exited"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
