@@ -13,7 +13,7 @@ var visao = false
 
 var escolha = [1,2]
 
-onready var Player = get_parent().get_node("Player")
+onready var Player = get_parent().get_node("Mage")
 
 func _process(delta):
 	if damage:

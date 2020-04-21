@@ -25,7 +25,7 @@ var count_on = false
 
 var count_damage_time = 100
 
-var def = 10
+var def = 5
 
 func _ready():
 	position = position.snapped(Vector2(tile_size, tile_size))

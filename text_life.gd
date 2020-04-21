@@ -26,7 +26,3 @@ func set_text(new_text):
 	
 func get_text():
 	return $Label.text
-
-
-func _on_Timer_timeout():
-	pass # Replace with function body.

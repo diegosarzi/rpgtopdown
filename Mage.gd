@@ -72,6 +72,7 @@ func _physics_process(delta):
 	if selected and damage_on:
 		if count_damage_time >= 100:
 			if position.x - selected.position.x <= 64 and position.x - selected.position.x >= -64 and position.y - selected.position.y <= 64 and position.y - selected.position.y >= -64:
+				get_parent().get_node("lifeball").fireballGo(position, selected.position)
 				selected.damage = true
 				selected.damage_amount = 20
 				count_damage_time = 0
