@@ -1,31 +1,183 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Resources/mage.png" type="Texture" id=1]
+[ext_resource path="res://Resources/mage_annimation.png" type="Texture" id=1]
 [ext_resource path="res://Mage.gd" type="Script" id=2]
 [ext_resource path="res://life_bar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/light.png" type="Texture" id=4]
+[ext_resource path="res://Resources/base_damage.png" type="Texture" id=5]
+[ext_resource path="res://Resources/base_preto.png" type="Texture" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="Animation" id=5]
+resource_name = "idle_baixo"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 6 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "idle_cima"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "idle_direita"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 3 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "idle_esquerda"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 9 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "walk_baixo"
+length = 0.6
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 7, 8 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "walk_cima"
+length = 0.6
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "walk_direita"
+length = 0.6
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 4, 5 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "walk_esquerda"
+length = 0.6
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 10, 11 ]
+}
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 19.457, 19.3454 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 313.043, 175.99 )
+extents = Vector2( 318.738, 178.663 )
+
+[sub_resource type="RectangleShape2D" id=1]
 
 [node name="Mage" type="KinematicBody2D"]
 script = ExtResource( 2 )
+life = 30
+dano = 5
 
-[node name="Panel" type="Panel" parent="."]
-visible = false
-modulate = Color( 0.960784, 0.0901961, 0.027451, 1 )
-margin_left = -14.7414
-margin_top = -15.8796
-margin_right = 25.2586
-margin_bottom = 24.1204
-rect_scale = Vector2( 0.760657, 0.776456 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="base_preto" type="Sprite" parent="."]
+modulate = Color( 0.992157, 0.992157, 0.996078, 0.372549 )
+self_modulate = Color( 0.988235, 0.984314, 0.984314, 1 )
+light_mask = 2
+position = Vector2( 0.0353322, -0.023301 )
+scale = Vector2( 0.334498, 0.335872 )
+texture = ExtResource( 6 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( -0.10379, 0.363129 )
+scale = Vector2( 1.29898, 1.29898 )
+texture = ExtResource( 4 )
+offset = Vector2( 1, 1 )
+texture_scale = 0.5
+energy = 0.5
+shadow_color = Color( 0.0666667, 0.0666667, 0.0666667, 0.713726 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 3
+hframes = 4
+frame = 6
 
 [node name="LifeBar" parent="." instance=ExtResource( 3 )]
 margin_left = -14.1938
@@ -33,10 +185,33 @@ margin_top = -22.9726
 margin_right = -14.1938
 margin_bottom = -22.9726
 
-[node name="player" type="Sprite" parent="."]
-texture = ExtResource( 1 )
-vframes = 2
-hframes = 2
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle_baixo = SubResource( 5 )
+anims/idle_cima = SubResource( 4 )
+anims/idle_direita = SubResource( 6 )
+anims/idle_esquerda = SubResource( 7 )
+anims/walk_baixo = SubResource( 8 )
+anims/walk_cima = SubResource( 9 )
+anims/walk_direita = SubResource( 10 )
+anims/walk_esquerda = SubResource( 11 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="Panel" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+
+[node name="Damage" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Damage"]
+shape = SubResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 2, 2 )
@@ -46,29 +221,9 @@ shape = SubResource( 1 )
 scale = Vector2( 0.4, 0.4 )
 enabled = true
 collision_mask = 3
-
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-
-[node name="Timer" type="Timer" parent="."]
-
-[node name="Damage" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Damage"]
-shape = SubResource( 2 )
-
-[node name="Node" type="Node" parent="."]
-
-[node name="Tween" type="Tween" parent="."]
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 3 )
 [connection signal="mouse_entered" from="." to="." method="_on_Player_mouse_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
 [connection signal="body_entered" from="Damage" to="." method="_on_Damage_body_entered"]
 [connection signal="body_exited" from="Damage" to="." method="_on_Damage_body_exited"]
-[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

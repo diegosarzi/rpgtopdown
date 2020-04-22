@@ -17,6 +17,7 @@ __meta__ = {
 light_mask = 2
 margin_right = 27.0
 margin_bottom = 4.0
+max_value = 100.0
 value = 100.0
 texture_under = ExtResource( 3 )
 texture_over = ExtResource( 1 )

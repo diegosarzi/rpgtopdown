@@ -9,7 +9,7 @@ var last_position = Vector2()
 var target_position = Vector2()
 var movedir = Vector2()
 
-var life = 100
+export (int) var life = 30
 var damage = false
 var damage_amount = 0
 var damage_amount_shuffer
@@ -25,7 +25,8 @@ var count_on = false
 
 var count_damage_time = 100
 
-var def = 5
+export (int) var dano = 3
+export (int) var def = 5
 
 func _ready():
 	position = position.snapped(Vector2(tile_size, tile_size))
@@ -33,6 +34,9 @@ func _ready():
 	target_position = position
 	
 func _physics_process(delta):
+	
+	if life <= 0:
+		return get_tree().reload_current_scene()
 	
 	for i in colider:
 		if count_on:
@@ -73,7 +77,7 @@ func _physics_process(delta):
 		if count_damage_time >= 100:
 			if position.x - selected.position.x <= 32 and position.x - selected.position.x >= -32 and position.y - selected.position.y <= 32 and position.y - selected.position.y >= -32:
 				selected.damage = true
-				selected.damage_amount = 25
+				selected.damage_amount = dano
 				count_damage_time = 0
 		else:
 			selected.damage = false

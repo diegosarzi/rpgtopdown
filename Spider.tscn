@@ -1,0 +1,161 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Resources/aranha_anime.png" type="Texture" id=1]
+[ext_resource path="res://Spider.gd" type="Script" id=2]
+[ext_resource path="res://life_bar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/base_damage.png" type="Texture" id=4]
+[ext_resource path="res://Resources/damage_gif.png" type="Texture" id=5]
+[ext_resource path="res://Resources/puff.png" type="Texture" id=6]
+[ext_resource path="res://Resources/spider_1.png" type="Texture" id=7]
+[ext_resource path="res://Resources/spider_2.png" type="Texture" id=8]
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 7 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "default",
+"speed": 2.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 9.52615, 9.3844 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "dano"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dano:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dano:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "puff"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("puff:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("puff:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[node name="Spider" type="KinematicBody2D"]
+script = ExtResource( 2 )
+dano = 4
+
+[node name="LifeBar" parent="." instance=ExtResource( 3 )]
+margin_left = -12.7801
+margin_top = -22.5624
+margin_right = -12.7801
+margin_bottom = -22.5624
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 4 )
+playing = true
+
+[node name="Panel" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 2.1, 2.1 )
+shape = SubResource( 1 )
+
+[node name="Damage" type="Area2D" parent="."]
+collision_layer = 3
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Damage"]
+scale = Vector2( 2, 2 )
+shape = SubResource( 1 )
+
+[node name="TimerWalk" type="Timer" parent="."]
+wait_time = 0.6
+autostart = true
+
+[node name="left" type="RayCast2D" parent="."]
+rotation = 1.57079
+scale = Vector2( 0.5, 0.5 )
+enabled = true
+collision_mask = 3
+
+[node name="up" type="RayCast2D" parent="."]
+rotation = -3.14159
+scale = Vector2( 0.5, 0.5 )
+enabled = true
+collision_mask = 3
+
+[node name="down" type="RayCast2D" parent="."]
+scale = Vector2( 0.5, 0.5 )
+enabled = true
+collision_mask = 3
+
+[node name="right" type="RayCast2D" parent="."]
+rotation = -1.57079
+scale = Vector2( 0.5, 0.5 )
+enabled = true
+collision_mask = 3
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Dano" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 5 )
+vframes = 2
+hframes = 2
+frame = 2
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/dano = SubResource( 2 )
+anims/puff = SubResource( 3 )
+
+[node name="puff" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 6 )
+vframes = 2
+hframes = 2
+frame = 3
+[connection signal="body_entered" from="Damage" to="." method="_on_Damage_body_entered"]
+[connection signal="body_exited" from="Damage" to="." method="_on_Damage_body_exited"]
+[connection signal="timeout" from="TimerWalk" to="." method="_on_TimerWalk_timeout"]

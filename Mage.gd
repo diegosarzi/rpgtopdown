@@ -1,6 +1,11 @@
 extends KinematicBody2D
 
-export var speed = 100
+export (int) var life = 100
+export (int) var speed = 100
+export (int) var dano = 3
+export (int) var def = 0
+export (int) var mana = 10
+
 var tile_size = 32
 
 onready var ray = $RayCast2D
@@ -9,7 +14,6 @@ var last_position = Vector2()
 var target_position = Vector2()
 var movedir = Vector2()
 
-var life = 100
 var damage = false
 var damage_amount = 0
 var damage_amount_shuffer
@@ -25,14 +29,23 @@ var count_on = false
 
 var count_damage_time = 100
 
-var def = 3
+var temp = "baixo"
 
 func _ready():
 	position = position.snapped(Vector2(tile_size, tile_size))
 	last_position = position
 	target_position = position
 	
+	$LifeBar/TextureProgress.max_value = life
+	$LifeBar/TextureProgress.value = life
+	
+	
 func _physics_process(delta):
+	
+	print(position)
+	
+	if life <= 0:
+		return get_tree().reload_current_scene()
 	
 	for i in colider:
 		if count_on:
@@ -74,7 +87,7 @@ func _physics_process(delta):
 			if position.x - selected.position.x <= 64 and position.x - selected.position.x >= -64 and position.y - selected.position.y <= 64 and position.y - selected.position.y >= -64:
 				get_parent().get_node("lifeball").fireballGo(position, selected.position)
 				selected.damage = true
-				selected.damage_amount = 20
+				selected.damage_amount = dano
 				count_damage_time = 0
 		else:
 			selected.damage = false
@@ -105,13 +118,20 @@ func _physics_process(delta):
 	if position == target_position:
 		get_movedir()
 		if movedir.x == -1:
-			$player.frame = 3
-		if movedir.x == 1:
-			$player.frame = 1
-		if movedir.y == -1:
-			$player.frame = 0
-		if movedir.y == 1:
-			$player.frame = 2
+			$AnimationPlayer.play("walk_esquerda")
+			temp = 'esquerda'
+		elif movedir.x == 1:
+			$AnimationPlayer.play("walk_direita")
+			temp = 'direita'
+		elif movedir.y == -1:
+			$AnimationPlayer.play("walk_cima")
+			temp = 'cima'
+		elif movedir.y == 1:
+			$AnimationPlayer.play("walk_baixo")
+			temp = 'baixo'
+		
+		else:
+			$AnimationPlayer.play("idle_" + temp)
 			
 		last_position = position
 		target_position += movedir * tile_size
@@ -154,8 +174,9 @@ func _on_Area2D_body_entered(body):
 
 # area de saida da visao do persongem ( player )
 func _on_Area2D_body_exited(body):
+	if array.find(body) != -1:
+		body.visao = false
 	array.remove(array.find(body))
-	body.visao = false
 
 ## FUNÇÃO DE DANO DO PLAYER
 func damageFunc(time):

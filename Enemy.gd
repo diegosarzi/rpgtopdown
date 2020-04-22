@@ -20,7 +20,14 @@ func _process(delta):
 		randomize()
 		damage_amount_shuffer = rand_range(damage_amount - damage_amount, damage_amount)
 		life -= int(damage_amount_shuffer)
+		
+		if int(damage_amount_shuffer) <= 0:
+			$AnimationPlayer.play("puff")
+		else:
+			$AnimationPlayer.play("dano")
+		
 		$LifeBar._on_health_updated(life,1)
+		
 		get_parent().get_node("Life_Text").damagePlayer(int(-damage_amount_shuffer),position,Color(1.0,0,0,1))
 		damage = false
 		
