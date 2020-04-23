@@ -16,6 +16,8 @@ var visao = false
 
 var escolha = [1,2]
 
+var enemy_xp = 5
+
 onready var Player = get_parent().get_node("Mage")
 
 func _ready():
@@ -41,7 +43,7 @@ func _process(delta):
 		
 	if life <= 0:
 		Player.selected = false
-		get_parent().dieEnemy('spider', position)
+		get_parent().dieEnemy('spider', position, enemy_xp)
 		self.queue_free()
 		
 func _on_Damage_body_entered(body):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Resources/mage_annimation.png" type="Texture" id=1]
 [ext_resource path="res://Mage.gd" type="Script" id=2]
@@ -6,8 +6,11 @@
 [ext_resource path="res://Resources/light.png" type="Texture" id=4]
 [ext_resource path="res://Resources/base_damage.png" type="Texture" id=5]
 [ext_resource path="res://Resources/base_preto.png" type="Texture" id=6]
+[ext_resource path="res://mana_bar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Resources/icon_fireball_desaturado.png" type="Texture" id=8]
+[ext_resource path="res://Resources/icon_fireball.png" type="Texture" id=9]
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=1]
 resource_name = "idle_baixo"
 length = 0.1
 loop = true
@@ -24,7 +27,7 @@ tracks/0/keys = {
 "values": [ 6 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 resource_name = "idle_cima"
 length = 0.1
 loop = true
@@ -41,7 +44,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=3]
 resource_name = "idle_direita"
 length = 0.1
 loop = true
@@ -58,7 +61,7 @@ tracks/0/keys = {
 "values": [ 3 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 resource_name = "idle_esquerda"
 length = 0.1
 loop = true
@@ -75,7 +78,7 @@ tracks/0/keys = {
 "values": [ 9 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "walk_baixo"
 length = 0.6
 step = 0.3
@@ -92,7 +95,7 @@ tracks/0/keys = {
 "values": [ 7, 8 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=6]
 resource_name = "walk_cima"
 length = 0.6
 step = 0.3
@@ -109,7 +112,7 @@ tracks/0/keys = {
 "values": [ 1, 2 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=7]
 resource_name = "walk_direita"
 length = 0.6
 step = 0.3
@@ -126,7 +129,7 @@ tracks/0/keys = {
 "values": [ 4, 5 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=8]
 resource_name = "walk_esquerda"
 length = 0.6
 step = 0.3
@@ -143,17 +146,281 @@ tracks/0/keys = {
 "values": [ 10, 11 ]
 }
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 19.457, 19.3454 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 318.738, 178.663 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=11]
+
+[sub_resource type="Animation" id=12]
+resource_name = "on"
+tracks/0/type = "value"
+tracks/0/path = NodePath("icon_fireball:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("icon_fireball:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Panel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.498039 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "wait"
+tracks/0/type = "value"
+tracks/0/path = NodePath("icon_fireball:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Panel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "on"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("icon_fireball:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("icon_fireball:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "wait"
+tracks/0/type = "value"
+tracks/0/path = NodePath("icon_fireball:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Panel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "on"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("icon_fireball:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("icon_fireball:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "wait"
+tracks/0/type = "value"
+tracks/0/path = NodePath("icon_fireball:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Panel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "on"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("icon_fireball:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("icon_fireball:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "wait"
+tracks/0/type = "value"
+tracks/0/path = NodePath("icon_fireball:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Panel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [node name="Mage" type="KinematicBody2D"]
+position = Vector2( -28.1405, 54.4847 )
 script = ExtResource( 2 )
-life = 30
 dano = 5
 
 [node name="base_preto" type="Sprite" parent="."]
@@ -165,13 +432,17 @@ scale = Vector2( 0.334498, 0.335872 )
 texture = ExtResource( 6 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( -0.10379, 0.363129 )
+position = Vector2( -0.253677, 0.363129 )
 scale = Vector2( 1.29898, 1.29898 )
 texture = ExtResource( 4 )
 offset = Vector2( 1, 1 )
 texture_scale = 0.5
 energy = 0.5
 shadow_color = Color( 0.0666667, 0.0666667, 0.0666667, 0.713726 )
+
+[node name="Panel" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -180,50 +451,295 @@ hframes = 4
 frame = 6
 
 [node name="LifeBar" parent="." instance=ExtResource( 3 )]
-margin_left = -14.1938
-margin_top = -22.9726
-margin_right = -14.1938
-margin_bottom = -22.9726
+margin_left = -14.0233
+margin_top = -26.8944
+margin_right = -14.0233
+margin_bottom = -26.8944
+
+[node name="ManaBar" parent="." instance=ExtResource( 7 )]
+margin_left = -14.2379
+margin_top = -24.213
+margin_right = -14.2379
+margin_bottom = -24.213
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/idle_baixo = SubResource( 5 )
-anims/idle_cima = SubResource( 4 )
-anims/idle_direita = SubResource( 6 )
-anims/idle_esquerda = SubResource( 7 )
-anims/walk_baixo = SubResource( 8 )
-anims/walk_cima = SubResource( 9 )
-anims/walk_direita = SubResource( 10 )
-anims/walk_esquerda = SubResource( 11 )
+anims/idle_baixo = SubResource( 1 )
+anims/idle_cima = SubResource( 2 )
+anims/idle_direita = SubResource( 3 )
+anims/idle_esquerda = SubResource( 4 )
+anims/walk_baixo = SubResource( 5 )
+anims/walk_cima = SubResource( 6 )
+anims/walk_direita = SubResource( 7 )
+anims/walk_esquerda = SubResource( 8 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 
-[node name="Panel" type="Sprite" parent="."]
-texture = ExtResource( 5 )
-
 [node name="Damage" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damage"]
-shape = SubResource( 2 )
+shape = SubResource( 9 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 3 )
+shape = SubResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 2, 2 )
-shape = SubResource( 1 )
+shape = SubResource( 11 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 scale = Vector2( 0.4, 0.4 )
 enabled = true
 collision_mask = 3
+
+[node name="label_life" type="Label" parent="."]
+margin_left = -298.793
+margin_top = 119.816
+margin_right = -258.793
+margin_bottom = 133.816
+rect_scale = Vector2( 0.739945, 0.739945 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label_mana" type="Label" parent="."]
+margin_left = -298.793
+margin_top = 133.376
+margin_right = -258.793
+margin_bottom = 147.376
+rect_scale = Vector2( 0.742677, 0.742677 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label_xp" type="Label" parent="."]
+margin_left = -298.793
+margin_top = 147.311
+margin_right = -258.793
+margin_bottom = 161.311
+rect_scale = Vector2( 0.76601, 0.76601 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="up_life_mana" type="Timer" parent="."]
+
+[node name="magias" type="Control" parent="."]
+margin_left = 55.7649
+margin_top = 11.1604
+margin_right = 95.7649
+margin_bottom = 51.1604
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="icon_fireball_desaturado" type="Sprite" parent="magias"]
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 8 )
+
+[node name="icon_fireball" type="Sprite" parent="magias"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 9 )
+
+[node name="Panel" type="Panel" parent="magias"]
+modulate = Color( 1, 1, 1, 0.498039 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = -101.138
+margin_top = 138.908
+margin_right = -68.1382
+margin_bottom = 173.908
+rect_scale = Vector2( 0.661296, 0.635239 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Q" type="Label" parent="magias"]
+anchor_top = -0.00509796
+anchor_bottom = -0.00509796
+margin_left = -87.7445
+margin_top = 151.23
+margin_right = -75.7445
+margin_bottom = 165.23
+rect_scale = Vector2( 0.603968, 0.603968 )
+text = "Q"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="magias"]
+anims/on = SubResource( 12 )
+anims/wait = SubResource( 13 )
+
+[node name="magias2" type="Control" parent="."]
+margin_left = 79.3185
+margin_top = 11.1604
+margin_right = 119.318
+margin_bottom = 51.1604
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="icon_fireball_desaturado" type="Sprite" parent="magias2"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 8 )
+
+[node name="icon_fireball" type="Sprite" parent="magias2"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 9 )
+
+[node name="Panel" type="Panel" parent="magias2"]
+modulate = Color( 1, 1, 1, 0.580392 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = -101.138
+margin_top = 138.908
+margin_right = -68.1382
+margin_bottom = 173.908
+rect_scale = Vector2( 0.661296, 0.635239 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Q" type="Label" parent="magias2"]
+anchor_top = -0.00509796
+anchor_bottom = -0.00509796
+margin_left = -87.7445
+margin_top = 151.23
+margin_right = -75.7445
+margin_bottom = 165.23
+rect_scale = Vector2( 0.603968, 0.603968 )
+text = "W"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="magias2"]
+anims/on = SubResource( 14 )
+anims/wait = SubResource( 15 )
+
+[node name="magias3" type="Control" parent="."]
+margin_left = 101.683
+margin_top = 11.0557
+margin_right = 141.683
+margin_bottom = 51.0557
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="icon_fireball_desaturado" type="Sprite" parent="magias3"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 8 )
+
+[node name="icon_fireball" type="Sprite" parent="magias3"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 9 )
+
+[node name="Panel" type="Panel" parent="magias3"]
+modulate = Color( 1, 1, 1, 0.580392 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = -101.138
+margin_top = 138.908
+margin_right = -68.1382
+margin_bottom = 173.908
+rect_scale = Vector2( 0.661296, 0.635239 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Q" type="Label" parent="magias3"]
+anchor_top = -0.00509796
+anchor_bottom = -0.00509796
+margin_left = -87.7445
+margin_top = 151.23
+margin_right = -75.7445
+margin_bottom = 165.23
+rect_scale = Vector2( 0.603968, 0.603968 )
+text = "E"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="magias3"]
+anims/on = SubResource( 16 )
+anims/wait = SubResource( 17 )
+
+[node name="magias4" type="Control" parent="."]
+margin_left = 124.742
+margin_top = 11.1604
+margin_right = 164.742
+margin_bottom = 51.1604
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="icon_fireball_desaturado" type="Sprite" parent="magias4"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 8 )
+
+[node name="icon_fireball" type="Sprite" parent="magias4"]
+visible = false
+position = Vector2( -90, 150 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 9 )
+
+[node name="Panel" type="Panel" parent="magias4"]
+modulate = Color( 1, 1, 1, 0.580392 )
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = -101.138
+margin_top = 138.908
+margin_right = -68.1382
+margin_bottom = 173.908
+rect_scale = Vector2( 0.661296, 0.635239 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Q" type="Label" parent="magias4"]
+anchor_top = -0.00509796
+anchor_bottom = -0.00509796
+margin_left = -87.7445
+margin_top = 151.23
+margin_right = -75.7445
+margin_bottom = 165.23
+rect_scale = Vector2( 0.603968, 0.603968 )
+text = "R"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="magias4"]
+anims/on = SubResource( 18 )
+anims/wait = SubResource( 19 )
+
+[node name="inimigos" type="Label" parent="."]
+margin_left = -295.116
+margin_top = -149.814
+margin_right = -255.116
+margin_bottom = -135.814
+rect_scale = Vector2( 0.648183, 0.681238 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="." to="." method="_on_Player_mouse_entered"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
 [connection signal="body_entered" from="Damage" to="." method="_on_Damage_body_entered"]
 [connection signal="body_exited" from="Damage" to="." method="_on_Damage_body_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+[connection signal="timeout" from="up_life_mana" to="." method="_on_up_life_mana_timeout"]

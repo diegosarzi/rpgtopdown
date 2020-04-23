@@ -1,10 +1,22 @@
 extends KinematicBody2D
 
-export (int) var life = 100
+#maginas
+var fireball_load = preload("res://fireball.tscn")
+
+export (int) var life = 30
+export (int) var mana = 30
+export (int) var xp = 10
+export (int) var lvl = 1
 export (int) var speed = 100
 export (int) var dano = 3
 export (int) var def = 0
-export (int) var mana = 10
+
+var mana_full = mana
+var life_full = life
+
+var wood_mana = 2
+var weapon = "wood-wand"
+var magic = ""
 
 var tile_size = 32
 
@@ -23,11 +35,18 @@ var array = []
 var selected = false
 var colider = []
 var damage_on = false
+var damage_on_magic = false
+
 
 var count = 100
 var count_on = false
 
-var count_damage_time = 100
+var time_magic = 200
+var count_damage_time = time_magic
+var count_damage_time_magic = time_magic
+
+# magias
+var fireball_mana = 10
 
 var temp = "baixo"
 
@@ -38,12 +57,23 @@ func _ready():
 	
 	$LifeBar/TextureProgress.max_value = life
 	$LifeBar/TextureProgress.value = life
+	$ManaBar/TextureProgress.max_value = mana
+	$ManaBar/TextureProgress.value = mana
+	
+	$up_life_mana.start(10)
 	
 	
 func _physics_process(delta):
 	
-	print(position)
+	$label_life.text = "life: " + str(life)
+	$label_mana.text = "mana: " + str(mana)	
+	$label_xp.text = "xp: " + str(xp)
 	
+	if !array.empty():
+		$inimigos.text = str(array).replace(",","\n")
+	else:
+		$inimigos.text = ""
+
 	if life <= 0:
 		return get_tree().reload_current_scene()
 	
@@ -85,10 +115,16 @@ func _physics_process(delta):
 	if selected and damage_on:
 		if count_damage_time >= 100:
 			if position.x - selected.position.x <= 64 and position.x - selected.position.x >= -64 and position.y - selected.position.y <= 64 and position.y - selected.position.y >= -64:
-				get_parent().get_node("lifeball").fireballGo(position, selected.position)
-				selected.damage = true
-				selected.damage_amount = dano
-				count_damage_time = 0
+				if wood_mana <= mana:
+					$ManaBar._on_health_updated(mana,wood_mana)
+					get_parent().get_node("lifeball").fireballGo(position, selected.position)
+					selected.damage = true
+					selected.damage_amount = dano
+					count_damage_time = 0
+					if weapon == "wood-wand":
+						mana -= 2
+					elif magic == "fire":
+						mana -= 10
 		else:
 			selected.damage = false
 	
@@ -99,6 +135,20 @@ func _physics_process(delta):
 	else:
 		count_damage_time = 100
 		damage_on = true
+	
+	# CONTADOR DAMAGE CONTRA INIMIGO
+	if count_damage_time_magic < time_magic:
+		count_damage_time_magic += 1
+		damage_on_magic = false
+	else:
+		count_damage_time_magic = time_magic
+		$magias/AnimationPlayer.play("wait")
+		damage_on_magic = true
+		
+	if mana < fireball_mana:
+		$magias/icon_fireball.visible = false
+	else:
+		$magias/icon_fireball.visible = true
 	
 	## DANO DO PERSONAGEM ( PLAYER )
 	if damage:
@@ -135,6 +185,18 @@ func _physics_process(delta):
 			
 		last_position = position
 		target_position += movedir * tile_size
+		
+		if Input.is_action_just_pressed("magia_simples"):
+			if selected:
+				if count_damage_time_magic >= time_magic:
+					if position.x - selected.position.x <= 32*3 and position.x - selected.position.x >= -32*3 and position.y - selected.position.y <= 32*3 and position.y - selected.position.y >= -32*3:
+						if mana >= fireball_mana:
+							selected.damage = true
+							selected.damage_amount = 10
+							count_damage_time_magic = 0
+							$magias/AnimationPlayer.play("on")
+							sendFireBall()
+			
 
 func get_movedir():
 	var RIGHT = Input.is_action_pressed("ui_right")
@@ -190,3 +252,24 @@ func damageFunc(time):
 		life -= int(result)
 	$LifeBar._on_health_updated(life,1)
 	get_parent().get_node("Life_Text").damagePlayer(int(-result), position, Color(0.6,0.0,0.0,1.0))
+
+# up de vida e mana do personagem
+func _on_up_life_mana_timeout():
+	if mana <= mana_full:
+		mana += 4
+		if mana > mana_full:
+			mana = mana_full
+		$ManaBar._on_health_updated(mana,1)
+	if life <= life_full:
+		life += 2
+		if life > life_full:
+			life = life_full
+		$LifeBar._on_health_updated(life,1)
+		
+func sendFireBall():
+	var fireball_instance = fireball_load.instance()
+	if selected and mana > 10:
+		fireball_instance.position = selected.position
+		mana -= 10
+		$ManaBar._on_health_updated(mana,1)
+		get_parent().add_child(fireball_instance)

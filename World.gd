@@ -5,7 +5,7 @@ var spider_die = preload("res://spider_die.tscn")
 var sangue_load = preload("res://sangue.tscn")
 
 func _ready():
-	for i in range(0,50):
+	for i in range(0,25):
 		respawSpider()
 
 func sangueEnemy(enemy, pos_enemy):
@@ -15,10 +15,12 @@ func sangueEnemy(enemy, pos_enemy):
 	
 	add_child(sangue)
 
-func dieEnemy(enemy, pos_die):
+func dieEnemy(enemy, pos_die, enemy_xp):
 	var spider = spider_die.instance()
 	spider.position = pos_die
 	spider.z_index = -1
+	
+	get_node("Mage").xp += enemy_xp
 
 	add_child(spider)
 	
