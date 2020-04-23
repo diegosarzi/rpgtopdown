@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 #maginas
 var fireball_load = preload("res://fireball.tscn")
+var hud_enemy_load = preload("res://hud_inimigo.tscn")
 
 export (int) var life = 30
 export (int) var mana = 30
@@ -13,6 +14,8 @@ export (int) var def = 0
 
 var mana_full = mana
 var life_full = life
+
+onready var fps_label = get_node("label_fps")
 
 var wood_mana = 2
 var weapon = "wood-wand"
@@ -30,7 +33,7 @@ var damage = false
 var damage_amount = 0
 var damage_amount_shuffer
 
-var array = []
+var enemys_array = []
 
 var selected = false
 var colider = []
@@ -50,6 +53,10 @@ var fireball_mana = 10
 
 var temp = "baixo"
 
+var hud_enemy_names = []
+var hud_enemy_number = 1
+var hud_enemy_y = -155
+
 func _ready():
 	position = position.snapped(Vector2(tile_size, tile_size))
 	last_position = position
@@ -62,15 +69,57 @@ func _ready():
 	
 	$up_life_mana.start(10)
 	
-	
+
 func _physics_process(delta):
+	
+	fps_label.set_text("fps: " + str(Engine.get_frames_per_second()))
 	
 	$label_life.text = "life: " + str(life)
 	$label_mana.text = "mana: " + str(mana)	
 	$label_xp.text = "xp: " + str(xp)
 	
-	if !array.empty():
-		$inimigos.text = str(array).replace(",","\n")
+	if !enemys_array.empty():
+		for i in range(0, enemys_array.size()):
+			if i == 0:
+				hud_enemy_y = -155
+				hud_enemy_number = 1
+			if i == 1:
+				hud_enemy_y = -130
+				hud_enemy_number = 2
+			if i == 2:
+				hud_enemy_y = -105
+				hud_enemy_number = 3
+			if i == 3:
+				hud_enemy_y = -80
+				hud_enemy_number = 4
+			if i == 4:
+				hud_enemy_y = -55
+				hud_enemy_number = 5
+			if i == 5:
+				hud_enemy_y = -30
+				hud_enemy_number = 6
+			if i == 6:
+				hud_enemy_y = -05
+				hud_enemy_number = 7
+			if i == 7:
+				hud_enemy_y = 20
+				hud_enemy_number = 8
+			if i == 8:
+				hud_enemy_y = 45
+				hud_enemy_number = 9
+			if i == 9:
+				hud_enemy_y = 70
+				hud_enemy_number = 0
+
+			if !has_node(str(enemys_array[i])) and hud_enemy_names.find(enemys_array[i]) == -1:
+				hudEnemyShow(str(enemys_array[i]),Vector2(-300,hud_enemy_y),hud_enemy_number)
+				hud_enemy_names.append(enemys_array[i])
+				#print(hud_enemy_names[i])
+
+			#### nao funciona!				
+			if enemys_array[i] != hud_enemy_names[i]:
+					get_node(str(hud_enemy_names[i]).replace(":","")).queue_free()
+				
 	else:
 		$inimigos.text = ""
 
@@ -93,11 +142,11 @@ func _physics_process(delta):
 			else:
 				count_on = false
 
-	## ARRAY DE INIMIGOS
-	if !array.empty():
-		for i in range(0, array.size()):
+	## enemys_array DE INIMIGOS
+	if !enemys_array.empty():
+		for i in range(0, enemys_array.size()):
 			if Input.is_action_just_pressed(str(i+1)):
-				if selected and selected == array[i]:
+				if selected and selected == enemys_array[i]:
 					selected.get_node("Panel").visible = false
 					selected.damage = false
 					selected = false
@@ -107,7 +156,7 @@ func _physics_process(delta):
 					selected.get_node("Panel").visible = false
 					selected.damage = false
 				
-				selected = array[i]
+				selected = enemys_array[i]
 				selected.get_node("Panel").visible = true
 				damage_on = true
 
@@ -230,15 +279,21 @@ func _on_Damage_body_exited(body):
 # area de visao do personagem  ( player )
 func _on_Area2D_body_entered(body):
 	if body.get_name() != 'Mage':
-		if array.find(body) == -1:
-			array.append(body)
+		if enemys_array.find(body) == -1:
+			enemys_array.append(body)
 			body.visao = true
 
 # area de saida da visao do persongem ( player )
 func _on_Area2D_body_exited(body):
-	if array.find(body) != -1:
+	if hud_enemy_names.find(str(body)):
+		#print(str(body).replace(":",""))
+		if has_node(str(body).replace(":","")):
+			get_node(str(body).replace(":","")).queue_free()
+			hud_enemy_names.remove(hud_enemy_names.find(body))
+		
+	if enemys_array.find(body) != -1:
 		body.visao = false
-	array.remove(array.find(body))
+	enemys_array.remove(enemys_array.find(body))
 
 ## FUNÇÃO DE DANO DO PLAYER
 func damageFunc(time):
@@ -273,3 +328,12 @@ func sendFireBall():
 		mana -= 10
 		$ManaBar._on_health_updated(mana,1)
 		get_parent().add_child(fireball_instance)
+
+var enemy
+
+func hudEnemyShow(eny_name,posicao,number):
+	enemy = hud_enemy_load.instance()
+	enemy.position = posicao
+	enemy.name = eny_name
+	enemy.get_node("text").text = str(number)
+	get_node(".").add_child(enemy)

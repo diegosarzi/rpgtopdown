@@ -421,9 +421,11 @@ tracks/1/keys = {
 [node name="Mage" type="KinematicBody2D"]
 position = Vector2( -28.1405, 54.4847 )
 script = ExtResource( 2 )
+mana = 300
 dano = 5
 
 [node name="base_preto" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0.992157, 0.992157, 0.996078, 0.372549 )
 self_modulate = Color( 0.988235, 0.984314, 0.984314, 1 )
 light_mask = 2
@@ -501,6 +503,16 @@ margin_left = -298.793
 margin_top = 119.816
 margin_right = -258.793
 margin_bottom = 133.816
+rect_scale = Vector2( 0.739945, 0.739945 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label_fps" type="Label" parent="."]
+margin_left = 272.254
+margin_top = -161.064
+margin_right = 312.254
+margin_bottom = -147.064
 rect_scale = Vector2( 0.739945, 0.739945 )
 __meta__ = {
 "_edit_use_anchors_": false

@@ -47,7 +47,6 @@ tracks/2/keys = {
 [node name="fireball" type="Node2D"]
 
 [node name="fire_ball" type="Sprite" parent="."]
-visible = false
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 3
